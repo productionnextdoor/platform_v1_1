@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
   CreateOrUpdateBaseProductInput,
+  DeveloperProductInvolvementDto,
   GeneralInfoInputDto,
   GeneralInfoOutputDto,
   IGeneralInfoOutputDto,
@@ -14,6 +15,7 @@ import {
   ProcessingDeadlineInput,
   ProducerAssignmentStatus,
   ProducerAssignmentStatusDto,
+  ProducerProductInvolvementDto,
   ProducersAcceptOrRejectInput,
   ProductDetailsServiceProxy,
   ProductFilesStepInput,
@@ -43,6 +45,7 @@ import { IProductFilter } from './product-table/product-table-base.service';
 import {
   IMaterialGroup,
   IMeasurement,
+  IOptionGroup,
   IProductModel,
   IWorkingPiece,
   IWorkPieceVariant,
@@ -221,6 +224,18 @@ export class ProductApiService extends IProductApiService {
     return this.productServiceProxy.finalizeEditMode(productId);
   }
 
+  public deleteProduct(productId: number): Observable<void> {
+    return this.productServiceProxy.deleteProduct(productId);
+  }
+
+  public getProducerProductInvolvements(producerId: number): Observable<ProducerProductInvolvementDto[]> {
+    return this.productServiceProxy.getProducerProductInvolvements(producerId);
+  }
+
+  public getDeveloperProductInvolvements(developerId: number): Observable<DeveloperProductInvolvementDto[]> {
+    return this.productServiceProxy.getDeveloperProductInvolvements(developerId);
+  }
+
   private listProductModelToInputBody(product: IProductWithStateModel): CreateOrUpdateBaseProductInput {
     return new CreateOrUpdateBaseProductInput({
       productId: product.productId,
@@ -252,28 +267,87 @@ export class ProductApiService extends IProductApiService {
   }
 
   private mapProductMaterialGroupInfos(infos: MaterialGroupStepOutput): IProductMaterialGroupsInfo {
+    const materialGroups: IMaterialGroup[] = this.mapDtoToMaterialGroup(infos.materialGroupDtos ?? []);
+    const workingPieces: IWorkingPiece[] = this.mapDtoToWorkingPieces(infos.workPieceDtos ?? []);
+    this.deriveSpecificationGroupIds(workingPieces, materialGroups);
     return {
-      materialGroups: this.mapDtoToMaterialGroup(infos.materialGroupDtos ?? []),
-      workingPieces: this.mapDtoToWorkingPieces(infos.workPieceDtos ?? [])
-    }
+      materialGroups,
+      workingPieces
+    };
   }
 
   private mapDtoToMaterialGroup(materialGroupDtos: MaterialGroupDto[]): IMaterialGroup[] {
     return materialGroupDtos?.map(materialGroup => {
+      const surfaces: SurfaceDto[] = materialGroup.surfaces ?? [];
+      const grouped: SurfaceDto[] = surfaces.filter(surface => surface.specificationGroupId);
+      const ungrouped: SurfaceDto[] = surfaces.filter(surface => !surface.specificationGroupId);
+      const sortedOptions: PmDropdownOption<number>[] = [
+        ...grouped.map(surface => this.getSpecifications(surface)),
+        ...ungrouped.map(surface => this.getSpecifications(surface))
+      ];
+      const optionGroups: IOptionGroup[] = this.buildOptionGroups(grouped, ungrouped);
       return {
         materialGroupId: materialGroup.materialGroupId,
         name: materialGroup.name ?? '',
-        localizedName: this.localisationService.loc('MaterialGroup.' + materialGroup.name ?? ''),
-        options: materialGroup.surfaces?.map(this.getSurfaceFinishes.bind(this)) ?? []
+        localizedName: this.localizeWithFallback('MaterialGroup', materialGroup.name ?? ''),
+        options: sortedOptions,
+        optionGroups: optionGroups.length > 0 ? optionGroups : undefined
       }
     });
   }
 
-  private getSurfaceFinishes(surfaceFinish: SurfaceDto): PmDropdownOption<number> {
+  private buildOptionGroups(grouped: SurfaceDto[], ungrouped: SurfaceDto[]): IOptionGroup[] {
+    const groupMap: Map<number, { name: string; options: PmDropdownOption<number>[] }> = new Map();
+    for (const surface of grouped) {
+      const gId: number = surface.specificationGroupId!;
+      if (!groupMap.has(gId)) {
+        groupMap.set(gId, {
+          name: this.localizeWithFallback('SpecificationGroup', surface.specificationGroupName ?? ''),
+          options: []
+        });
+      }
+      groupMap.get(gId)!.options.push(this.getSpecifications(surface));
+    }
+    const optionGroups: IOptionGroup[] = Array.from(groupMap.entries()).map(([groupId, groupEntry]) => ({
+      groupId,
+      groupName: groupEntry.name,
+      options: groupEntry.options
+    }));
+    if (ungrouped.length > 0 && grouped.length > 0) {
+      optionGroups.push({
+        groupId: 0,
+        groupName: this.localizeWithFallback('SpecificationGroup', 'Ungrouped'),
+        options: ungrouped.map(surface => this.getSpecifications(surface))
+      });
+    }
+    return optionGroups;
+  }
+
+  private deriveSpecificationGroupIds(workingPieces: IWorkingPiece[], materialGroups: IMaterialGroup[]): void {
+    for (const workingPiece of workingPieces) {
+      const materialGroup: IMaterialGroup | undefined = materialGroups.find(group => group.materialGroupId === workingPiece.materialGroupId);
+      if (!materialGroup?.optionGroups) continue;
+      workingPiece.specificationGroupIds = workingPiece.specificationIds.map(specId => {
+        const matchingGroup: IOptionGroup | undefined = materialGroup.optionGroups!.find(optGroup =>
+          optGroup.options.some(opt => opt.key === specId)
+        );
+        return matchingGroup?.groupId ?? 0;
+      });
+    }
+  }
+
+  private getSpecifications(specification: SurfaceDto): PmDropdownOption<number> {
     return {
-      key: surfaceFinish.surfaceFinishId,
-      value: this.localisationService.loc('SurfaceFinish.' + surfaceFinish.name ?? '')
+      key: specification.specificationId,
+      value: this.localizeWithFallback('Specification', specification.name ?? ''),
+      group: specification.specificationGroupName ?? undefined
     };
+  }
+
+  private localizeWithFallback(prefix: string, name: string): string {
+    const key: string = `${prefix}.${name}`;
+    const localized: string = this.localisationService.loc(key);
+    return localized === key ? name : localized;
   }
 
   private mapDtoToWorkingPieces(workPieceDtos: WorkPieceDto[]): IWorkingPiece[] {
@@ -283,7 +357,8 @@ export class ProductApiService extends IProductApiService {
         materialGroupId: item.materialGroupId,
         material: item.name,
         finalState: item.finishedState,
-        surfaceFinishId: item.surfaceFinishId,
+        specificationIds: item.specificationIds ?? [],
+        specificationGroupIds: []
       }
     ));
   }
@@ -300,7 +375,7 @@ export class ProductApiService extends IProductApiService {
     return workPieces.map(workPiece => {
       return {
         key: workPiece.workPieceId ?? 0,
-        value: this.localisationService.loc('MaterialGroup.' + workPiece.materialGroupName ?? '') + ' (' + workPiece.name + ')'
+        value: this.localizeWithFallback('MaterialGroup', workPiece.materialGroupName ?? '') + ' (' + workPiece.name + ')'
       }
     });
   }
@@ -318,7 +393,7 @@ export class ProductApiService extends IProductApiService {
         workPieceId: workingPiece.workingPieceId ?? 0,
         name: workingPiece.material,
         finishedState: workingPiece.finalState,
-        surfaceFinishId: workingPiece.surfaceFinishId,
+        specificationIds: workingPiece.specificationIds,
         materialGroupId: workingPiece.materialGroupId
       })
     ));

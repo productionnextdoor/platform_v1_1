@@ -47,7 +47,7 @@ export class ProductMaterialGroupsStepComponent extends WithRx() implements OnIn
 
   protected materialGroups: IMaterialGroup[] = [];
 
-  protected workingPieces: IWorkingPiece[][] = []
+  protected workingPieces: IWorkingPiece[] = [];
 
   protected localisations: IMaterialGroupLocalisations;
 
@@ -65,12 +65,20 @@ export class ProductMaterialGroupsStepComponent extends WithRx() implements OnIn
       titleText: this.localisationService.loc('ProductCreateOrEditMaterialGroups.SubTitle'),
       descriptionText: this.localisationService.loc('ProductCreateOrEditMaterialGroups.Description'),
       materialItem: {
+        materialGroupLabel: this.localisationService.loc('ProductCreateOrEditMaterialGroups.MaterialItem.MaterialGroupLabel'),
+        materialGroupPlaceholder: this.localisationService.loc('ProductCreateOrEditMaterialGroups.MaterialItem.MaterialGroupPlaceholder'),
         materialLabel: this.localisationService.loc('ProductCreateOrEditMaterialGroups.MaterialItem.MaterialLabel'),
         finalStateLabel: this.localisationService.loc('ProductCreateOrEditMaterialGroups.MaterialItem.FinalStateLabel'),
-        surfaceFinishLabel: this.localisationService.loc('ProductCreateOrEditMaterialGroups.MaterialItem.SurfaceFinishLabel'),
+        specificationGroupLabel: this.localisationService.loc('ProductCreateOrEditMaterialGroups.MaterialItem.SpecificationGroupLabel'),
+        specificationGroupPlaceholder: this.localisationService.loc('ProductCreateOrEditMaterialGroups.MaterialItem.SpecificationGroupPlaceholder'),
+        specificationLabel: this.localisationService.loc('ProductCreateOrEditMaterialGroups.MaterialItem.SpecificationLabel'),
         materialPlaceholder: this.localisationService.loc('ProductCreateOrEditMaterialGroups.MaterialItem.MaterialPlaceholder'),
         finalStatePlaceholder: this.localisationService.loc('ProductCreateOrEditMaterialGroups.MaterialItem.FinalStatePlaceholder'),
-        surfaceFinishPlaceholder: this.localisationService.loc('ProductCreateOrEditMaterialGroups.MaterialItem.SurfaceFinishPlaceholder'),
+        specificationPlaceholder: this.localisationService.loc('ProductCreateOrEditMaterialGroups.MaterialItem.SpecificationPlaceholder'),
+        secondSpecificationLabel: this.localisationService.loc('ProductCreateOrEditMaterialGroups.MaterialItem.SecondSpecificationLabel'),
+        secondSpecificationPlaceholder: this.localisationService.loc('ProductCreateOrEditMaterialGroups.MaterialItem.SecondSpecificationPlaceholder'),
+        firstSpecificationHeading: this.localisationService.loc('ProductCreateOrEditMaterialGroups.MaterialItem.FirstSpecificationHeading'),
+        secondSpecificationHeading: this.localisationService.loc('ProductCreateOrEditMaterialGroups.MaterialItem.SecondSpecificationHeading'),
         inputErrorMessages: [this.localisationService.loc('Error.InputField.RequiredMissing')],
       }
     }
@@ -83,25 +91,25 @@ export class ProductMaterialGroupsStepComponent extends WithRx() implements OnIn
   }
 
   protected validateFormData(): void {
-    const flattenedWorkingPieces: IWorkingPiece [] = this.getFlattenWorkingPieces();
-
-    const hasWorkingPieces: boolean = flattenedWorkingPieces.length > 0;
-    const validFormData: boolean = hasWorkingPieces && flattenedWorkingPieces
-      .every(workingPiece =>
-        workingPiece.material &&
-        workingPiece.finalState &&
-        workingPiece.surfaceFinishId
-      );
+    const hasWorkingPieces: boolean = this.workingPieces.length > 0;
+    const allFieldsFilled: boolean = this.workingPieces.every(workingPiece =>
+      workingPiece.materialGroupId &&
+      workingPiece.material &&
+      workingPiece.finalState &&
+      workingPiece.specificationIds?.length > 0
+    );
+    const validFormData: boolean = hasWorkingPieces && allFieldsFilled;
 
     this.isValidChange.emit(validFormData);
   }
 
   private initWorkPieces() {
     this.productApiService.getProductMaterialGroups(this.productId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (result: IProductMaterialGroupsInfo) => {
           this.materialGroups = result.materialGroups;
-          this.workingPieces = ProductMaterialGroupsStepComponent.mapWorkingPiecesByMaterialGroupId(result.workingPieces);
+          this.workingPieces = result.workingPieces;
           this.validateFormData();
         }
       });
@@ -117,28 +125,15 @@ export class ProductMaterialGroupsStepComponent extends WithRx() implements OnIn
         return;
       }
 
-      this.workingPieces = ProductMaterialGroupsStepComponent.mapWorkingPiecesByMaterialGroupId(workingPiecesResult);
+      this.workingPieces = workingPiecesResult;
       this.onSaveSuccess.emit(true);
     });
   }
 
   private saveProductMaterialGroups(): Observable<IWorkingPiece[] | null> {
-    return this.productApiService.saveProductMaterialGroups(this.productId, this.getFlattenWorkingPieces())
+    return this.productApiService.saveProductMaterialGroups(this.productId, this.workingPieces)
       .pipe(
-        catchError(() => of(null)) // Prevents the observable to be completed on error
+        catchError(() => of(null))
       );
-  }
-
-  private getFlattenWorkingPieces(): IWorkingPiece[] {
-    return this.workingPieces
-      .reduce((acc, workingPieces) => acc.concat(workingPieces), []);
-  }
-
-  private static mapWorkingPiecesByMaterialGroupId(workingPieces: IWorkingPiece[]): IWorkingPiece[][] {
-    return workingPieces.reduce((acc: IWorkingPiece[][], workingPiece: IWorkingPiece) => {
-      acc[workingPiece.materialGroupId] = acc[workingPiece.materialGroupId] || [];
-      acc[workingPiece.materialGroupId].push(workingPiece);
-      return acc;
-    }, []);
   }
 }

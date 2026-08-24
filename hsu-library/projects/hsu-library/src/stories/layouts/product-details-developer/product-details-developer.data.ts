@@ -75,7 +75,7 @@ export const productDetailsDeveloperData: IProductDetailsDeveloperData = {
               value: 'Montiertes Gestell',
             },
             {
-              key: 'Oberflächenbeschaffenheit',
+              key: 'Spezifizierung',
               value: 'Oberfläche 01',
             },
           ]
@@ -92,7 +92,7 @@ export const productDetailsDeveloperData: IProductDetailsDeveloperData = {
               value: 'Fertige Glasplatte',
             },
             {
-              key: 'Oberflächenbeschaffenheit',
+              key: 'Spezifizierung',
               value: 'Klar',
             },
           ]

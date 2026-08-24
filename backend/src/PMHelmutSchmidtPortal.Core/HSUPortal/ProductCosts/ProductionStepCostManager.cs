@@ -82,12 +82,11 @@ public class ProductionStepCostManager : HSUDomainBaseService, IProductionStepCo
         
     private static StepVariantCostInformation CalculateMeasurementMaterialVariantCost(ProductionStep step, int measurementVariantId, int materialVariantCostId)
     {
-        decimal hourlyWage = step.ProducerInfo.Rate;
         ProductionStepMeasurementVariant defaultMeasurementVariant = step.StepMeasurementVariants.First(smv => smv.ProductMeasurementId == measurementVariantId);
         ProductionStepWorkPieceVariantCost defaultMaterialCosts = defaultMeasurementVariant.StepWorkPieceVariantCosts.First(swpv => swpv.Id == materialVariantCostId);
 
         return new StepVariantCostInformation(
-            defaultMeasurementVariant.WorkHours * hourlyWage,
+            defaultMaterialCosts.WorkCost,
             defaultMeasurementVariant.AdditionalCost,
             defaultMeasurementVariant.TransportAndAssemblyCost,
             defaultMaterialCosts.MaterialCost);

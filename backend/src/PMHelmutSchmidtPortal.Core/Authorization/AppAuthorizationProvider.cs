@@ -1,4 +1,4 @@
-﻿using Abp.Authorization;
+using Abp.Authorization;
 using Abp.Configuration.Startup;
 using Abp.Localization;
 using Abp.MultiTenancy;
@@ -151,6 +151,7 @@ public class AppAuthorizationProvider : AuthorizationProvider
         productsBase.CreateChildPermission(AppPermissions.Hsu_Product_Base_GetProductAssigmentStatus, L("GetProductAssigmentStatus"));
         productsBase.CreateChildPermission(AppPermissions.Hsu_Product_Base_AcceptOrRejectProductionRequest, L("AcceptOrRejectProductionRequest"));
         productsBase.CreateChildPermission(AppPermissions.Hsu_Product_Base_EditMode, L("EditMode"));
+        productsBase.CreateChildPermission(AppPermissions.Hsu_Product_Base_Delete, L("Delete"));
 
         
         Permission productsDetails = products.CreateChildPermission(AppPermissions.Hsu_Product_Details, L("Details"));
@@ -226,6 +227,21 @@ public class AppAuthorizationProvider : AuthorizationProvider
         profile.CreateChildPermission(AppPermissions.Hsu_ExtendedUser_Profiles_CurrentAdmin, L("GetCurrentAdminProfile"));
         profile.CreateChildPermission(AppPermissions.Hsu_ExtendedUser_Profiles_CurrentDeveloper, L("GetCurrentDeveloperProfile"));
         profile.CreateChildPermission(AppPermissions.Hsu_ExtendedUser_Profiles_CurrentProducer, L("GetCurrentProducerProfile"));
+
+        //Materials
+        Permission materials = hsu.CreateChildPermission(AppPermissions.Hsu_Materials, L("Materials"));
+        materials.CreateChildPermission(AppPermissions.Hsu_Materials_Manage, L("ManageMaterials"));
+        materials.CreateChildPermission(AppPermissions.Hsu_Materials_Get, L("GetMaterials"));
+        materials.CreateChildPermission(AppPermissions.Hsu_Materials_Create, L("CreateMaterial"));
+        materials.CreateChildPermission(AppPermissions.Hsu_Materials_Update, L("UpdateMaterial"));
+        materials.CreateChildPermission(AppPermissions.Hsu_Materials_Delete, L("DeleteMaterial"));
+
+        //Specifications
+        Permission specifications = hsu.CreateChildPermission(AppPermissions.Hsu_Specifications, L("Specifications"));
+        specifications.CreateChildPermission(AppPermissions.Hsu_Specifications_Get, L("GetSpecifications"));
+        specifications.CreateChildPermission(AppPermissions.Hsu_Specifications_Create, L("CreateSpecification"));
+        specifications.CreateChildPermission(AppPermissions.Hsu_Specifications_Update, L("UpdateSpecification"));
+        specifications.CreateChildPermission(AppPermissions.Hsu_Specifications_Delete, L("DeleteSpecification"));
 
         //Utilities 
         Permission utilities = hsu.CreateChildPermission(AppPermissions.Hsu_Utilities, L("Utilities"));

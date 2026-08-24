@@ -115,11 +115,14 @@ jobs:
           cd backend/src/${ASPNET_PROJECT_NAME}.Web.Host
           cp appsettings.json appsettings_backup.json
           cp ${CONFIG_FILE} appsettings.json
-          cd ../${ASPNET_PROJECT_NAME}.EntityFrameworkCore/
+          cd ..
           dotnet tool install --global dotnet-ef --version ${SDK_GLOBAL_VERSION}
-          dotnet tool restore
-          ~/.dotnet/tools/dotnet-ef database update
-          cd ../${ASPNET_PROJECT_NAME}.Web.Host
+          dotnet restore ${ASPNET_PROJECT_NAME}.Web.Host/
+          dotnet build ${ASPNET_PROJECT_NAME}.Web.Host/ --no-restore
+          ~/.dotnet/tools/dotnet-ef database update \
+            --project ${ASPNET_PROJECT_NAME}.EntityFrameworkCore/ \
+            --startup-project ${ASPNET_PROJECT_NAME}.Web.Host/
+          cd ${ASPNET_PROJECT_NAME}.Web.Host
           cp appsettings_backup.json appsettings.json
 
     - name: Build Backend

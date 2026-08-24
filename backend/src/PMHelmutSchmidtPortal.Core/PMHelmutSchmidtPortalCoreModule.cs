@@ -48,6 +48,7 @@ using PMHelmutSchmidtPortal.Net.Emailing;
 using PMHelmutSchmidtPortal.Notifications;
 using PMHelmutSchmidtPortal.WebHooks;
 using PMHelmutSchmidtPortal.HSUPortal.Users;
+using Abp.RealTime;
 
 namespace PMHelmutSchmidtPortal
 {
@@ -137,6 +138,10 @@ namespace PMHelmutSchmidtPortal
             });
 
             IocManager.Register<DashboardConfiguration>();
+            
+            // ABP 10.x - Register IOnlineClientManager for ChatChannel
+            // Register using RegisterIfNot to avoid conflicts
+            IocManager.RegisterIfNot<IOnlineClientManager<ChatChannel>, NullOnlineClientManager<ChatChannel>>(DependencyLifeStyle.Singleton);
             
             Configuration.Notifications.Notifiers.Add<SmsRealTimeNotifier>();
             Configuration.Notifications.Notifiers.Add<EmailRealTimeNotifier>();

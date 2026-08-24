@@ -78,6 +78,8 @@ export * from './lib/layouts/pm-material-group/pm-material-group.component';
 export * from './lib/layouts/pm-material-group/pm-material-group.shared';
 export * from './lib/layouts/pm-material-item/pm-material-item.component';
 export * from './lib/layouts/pm-material-item/pm-material-item.shared';
+export * from './lib/layouts/pm-material-overview/pm-material-overview.component';
+export * from './lib/layouts/pm-material-overview/pm-material-overview.shared';
 export * from './lib/layouts/pm-max-cost-popup/pm-max-cost-popup.component';
 export * from './lib/layouts/pm-max-cost-popup/pm-max-cost-popup.shared';
 export * from './lib/layouts/pm-menu/pm-menu.component';
@@ -152,10 +154,11 @@ export * from './lib/layouts/pm-work-step-popup/pm-work-step-popup.component';
 export * from './lib/layouts/pm-work-step-popup/pm-work-step-popup.shared';
 export * from './lib/layouts/pm-workstep-table/pm-workstep-table.component';
 export * from './lib/layouts/pm-workstep-table/pm-workstep-table.shared';
-export * from './lib/layouts/pm-workstep-wizard/pm-workstep-data/pm-workstep-data.component'
-export * from './lib/layouts/pm-workstep-wizard/pm-workstep-data/pm-workstep-data.shared';
-export * from './lib/layouts/pm-workstep-wizard/pm-workstep-wizard.component';
-export * from './lib/layouts/pm-workstep-wizard/pm-workstep-wizard.shared';
+export * from './lib/layouts/pm-matrix-fill-popover/pm-matrix-fill-popover.component';
+export * from './lib/layouts/pm-workstep-matrix/pm-workstep-matrix.component';
+export * from './lib/layouts/pm-workstep-matrix/pm-workstep-matrix.shared';
+export * from './lib/layouts/pm-workstep-matrix-modal/pm-workstep-matrix-modal.component';
+export * from './lib/layouts/pm-workstep-matrix-modal/pm-workstep-matrix-modal.shared';
 export * from './lib/layouts/pm-statistics-card/pm-statistics-card.component';
 export * from './lib/layouts/pm-statistics-card/pm-statistics-card.shared';
 

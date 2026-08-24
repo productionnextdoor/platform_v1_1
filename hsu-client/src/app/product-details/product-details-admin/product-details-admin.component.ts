@@ -15,6 +15,7 @@ import {
   IBreadCrumbLink,
   IBreadcrumbs,
   IFileNameByCategory,
+  IPmConfirmPopupLocalisations,
   IProductDetailsBaseData,
   IPropertySection,
   ITab,
@@ -43,7 +44,6 @@ import { IProductApiService } from '../../../services/products/iproduct-api.serv
 import { IUiService } from '../../../services/utils/iui.service';
 import {
   combineLatest,
-  finalize,
   Observable,
   startWith,
   Subject
@@ -125,6 +125,11 @@ export class ProductDetailsAdminComponent implements OnInit, OnChanges {
   protected showEditModeConfirmPopup: boolean = false;
   protected showEditModeCancelPopup: boolean = false;
   protected showEditModePublishPopup: boolean = false;
+  protected showDeleteConfirmPopup: boolean = false;
+  protected deleteConfirmDisabled: boolean = false;
+  protected deleteConfirmPopupLocalisations: IPmConfirmPopupLocalisations = {
+    title: '', description: '', confirm: '', cancel: ''
+  };
   protected topActionButton: IActionButton = {
     buttonIsDisabled: true,
     buttonLabel: '',
@@ -257,14 +262,14 @@ export class ProductDetailsAdminComponent implements OnInit, OnChanges {
     this.uiService.showBusyIndicator();
     this.productApiService
       .enableEditMode(this.productId)
-      .pipe(
-        finalize(() => this.uiService.hideBusyIndicator())
-      )
-      .subscribe((result) => {
-        this.productionDetailsEditId = result;
-        this.currentProductionDetailsId = result;
-        this.tabCartTabs = this.productDetailsService.getTabCardTabs(this.productionDetailsLiveId, this.productionDetailsEditId,this.currentProductionDetailsId);
-        this.tabCartButtons = this.productDetailsService.getTabCardButtons();
+      .subscribe({
+        next: (result) => {
+          this.productionDetailsEditId = result;
+          this.currentProductionDetailsId = result;
+          this.tabCartTabs = this.productDetailsService.getTabCardTabs(this.productionDetailsLiveId, this.productionDetailsEditId,this.currentProductionDetailsId);
+          this.tabCartButtons = this.productDetailsService.getTabCardButtons();
+        },
+        complete: () => this.uiService.hideBusyIndicator()
       });
   }
 
@@ -273,11 +278,11 @@ export class ProductDetailsAdminComponent implements OnInit, OnChanges {
     this.uiService.showBusyIndicator();
     this.productApiService
       .cancelEditMode(this.productId)
-      .pipe(
-        finalize(() => this.uiService.hideBusyIndicator())
-      )
-      .subscribe(() => {
-        this.productionDetailsEditId = undefined;
+      .subscribe({
+        next: () => {
+          this.productionDetailsEditId = undefined;
+        },
+        complete: () => this.uiService.hideBusyIndicator()
       });
   }
 
@@ -286,12 +291,38 @@ export class ProductDetailsAdminComponent implements OnInit, OnChanges {
     this.uiService.showBusyIndicator();
     this.productApiService
       .confirmEditMode(this.productId)
-      .pipe(
-        finalize(() => this.uiService.hideBusyIndicator())
-      )
-      .subscribe(() => {
-        this.productionDetailsLiveId =  this.currentProductionDetailsId;
-        this.productionDetailsEditId = undefined;
+      .subscribe({
+        next: () => {
+          this.productionDetailsLiveId = this.currentProductionDetailsId;
+          this.productionDetailsEditId = undefined;
+        },
+        complete: () => this.uiService.hideBusyIndicator()
+      });
+  }
+
+  openDeleteConfirmPopup(): void {
+    if (this.productState === ProductState.Live) {
+      this.deleteConfirmPopupLocalisations = this.localisations.deleteNotAllowedPopup;
+      this.deleteConfirmDisabled = true;
+    } else {
+      this.deleteConfirmPopupLocalisations = this.localisations.confirmDeletePopup;
+      this.deleteConfirmDisabled = false;
+    }
+    this.showDeleteConfirmPopup = true;
+  }
+
+  closeDeleteConfirmPopup(): void {
+    this.showDeleteConfirmPopup = false;
+  }
+
+  deleteProduct(): void {
+    this.showDeleteConfirmPopup = false;
+    this.uiService.showBusyIndicator();
+    this.productApiService
+      .deleteProduct(this.productId)
+      .subscribe({
+        next: () => this.navigationService.navigate(Path.PRODUCTS),
+        complete: () => this.uiService.hideBusyIndicator()
       });
   }
 

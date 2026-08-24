@@ -1,4 +1,4 @@
-﻿namespace PMHelmutSchmidtPortal.Authorization;
+namespace PMHelmutSchmidtPortal.Authorization;
 
 /// <summary>
 /// Defines string constants for application's permission names.
@@ -130,6 +130,7 @@ public static class AppPermissions
     public const string Hsu_Product_Base_GetProductAssigmentStatus = "Hsu.Product.Base.GetProductAssigmentStatus ";
     public const string Hsu_Product_Base_AcceptOrRejectProductionRequest = "Hsu.Product.Base.AcceptOrRejectProductionRequest";
     public const string Hsu_Product_Base_EditMode = "Hsu.Product.Base.EditMode";
+    public const string Hsu_Product_Base_Delete = "Hsu.Product.Base.Delete";
 
     public const string Hsu_Product_Details = "Hsu.Product.Details";
     public const string Hsu_Product_Details_Overview_Get_Admin = "Hsu.Product.Details.Overview.Get.Admin";
@@ -199,6 +200,19 @@ public static class AppPermissions
     public const string Hsu_ExtendedUser_Profiles_CurrentAdmin = "Hsu.ExtendedUser.Profiles.CurrentAdmin";
     public const string Hsu_ExtendedUser_Profiles_CurrentDeveloper = "Hsu.ExtendedUser.Profiles.CurrentDeveloper";
     public const string Hsu_ExtendedUser_Profiles_CurrentProducer = "Hsu.ExtendedUser.Profiles.CurrentProducer";
+
+    public const string Hsu_Materials = "Hsu.Materials";
+    public const string Hsu_Materials_Manage = "Hsu.Materials.Manage";
+    public const string Hsu_Materials_Get = "Hsu.Materials.Get";
+    public const string Hsu_Materials_Create = "Hsu.Materials.Create";
+    public const string Hsu_Materials_Update = "Hsu.Materials.Update";
+    public const string Hsu_Materials_Delete = "Hsu.Materials.Delete";
+
+    public const string Hsu_Specifications = "Hsu.Specifications";
+    public const string Hsu_Specifications_Get = "Hsu.Specifications.Get";
+    public const string Hsu_Specifications_Create = "Hsu.Specifications.Create";
+    public const string Hsu_Specifications_Update = "Hsu.Specifications.Update";
+    public const string Hsu_Specifications_Delete = "Hsu.Specifications.Delete";
 
     public const string Hsu_Utilities = "Hsu.Utilities";
     public const string Hsu_Utilities_RemoveNonExistingFileEntries = "Hsu.Utilities.RemoveNonExistingFileEntries";

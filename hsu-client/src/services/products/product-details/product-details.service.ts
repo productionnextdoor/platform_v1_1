@@ -153,8 +153,21 @@ export class ProductDetailsService extends IProductDetailsService {
         confirm: this.localizationService.loc('ProductDetails.MaxCostPopup.Confirm'),
         cancel: this.localizationService.loc('ProductDetails.MaxCostPopup.Cancel'),
       },
+      confirmDeletePopup: {
+        title: this.localizationService.loc('Product.Delete.ConfirmPopup.Title'),
+        description: this.localizationService.loc('Product.Delete.ConfirmPopup.Description'),
+        confirm: this.localizationService.loc('ConfirmPopup.Default.Confirm'),
+        cancel: this.localizationService.loc('ConfirmPopup.Default.Cancel'),
+      },
+      deleteNotAllowedPopup: {
+        title: this.localizationService.loc('Product.Delete.NotAllowed.Title'),
+        description: this.localizationService.loc('Product.Delete.NotAllowed.Description'),
+        confirm: this.localizationService.loc('ConfirmPopup.Default.Confirm'),
+        cancel: this.localizationService.loc('ConfirmPopup.Default.Cancel'),
+      },
       publishProduct: this.localizationService.loc('ProductExport.PublishProduct'),
       makeChanges: this.localizationService.loc('ProductExport.MakeChanges'),
+      deleteProduct: this.localizationService.loc('Product.Delete.ButtonLabel'),
     };
   }
 

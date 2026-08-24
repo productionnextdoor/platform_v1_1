@@ -17,7 +17,7 @@ namespace PMHelmutSchmidtPortal.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "10.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -47,7 +47,8 @@ namespace PMHelmutSchmidtPortal.Migrations
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
@@ -72,7 +73,7 @@ namespace PMHelmutSchmidtPortal.Migrations
 
                     b.ToTable("AbpEditions");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Edition");
+                    b.HasDiscriminator().HasValue("Edition");
 
                     b.UseTphMappingStrategy();
                 });
@@ -93,7 +94,8 @@ namespace PMHelmutSchmidtPortal.Migrations
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -112,7 +114,7 @@ namespace PMHelmutSchmidtPortal.Migrations
 
                     b.ToTable("AbpFeatures");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("FeatureSetting");
+                    b.HasDiscriminator().HasValue("FeatureSetting");
 
                     b.UseTphMappingStrategy();
                 });
@@ -166,8 +168,8 @@ namespace PMHelmutSchmidtPortal.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Parameters")
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
+                        .HasMaxLength(4096)
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReturnValue")
                         .HasColumnType("nvarchar(max)");
@@ -209,7 +211,8 @@ namespace PMHelmutSchmidtPortal.Migrations
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
                     b.Property<bool>("IsGranted")
                         .HasColumnType("bit");
@@ -228,7 +231,7 @@ namespace PMHelmutSchmidtPortal.Migrations
 
                     b.ToTable("AbpPermissions");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("PermissionSetting");
+                    b.HasDiscriminator().HasValue("PermissionSetting");
 
                     b.UseTphMappingStrategy();
                 });
@@ -427,6 +430,10 @@ namespace PMHelmutSchmidtPortal.Migrations
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("FailReason")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
 
                     b.Property<byte>("Result")
                         .HasColumnType("tinyint");
@@ -1095,6 +1102,10 @@ namespace PMHelmutSchmidtPortal.Migrations
                     b.Property<string>("NotificationName")
                         .HasMaxLength(96)
                         .HasColumnType("nvarchar(96)");
+
+                    b.Property<string>("TargetNotifiers")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
 
                     b.Property<int?>("TenantId")
                         .HasColumnType("int");
@@ -2184,6 +2195,9 @@ namespace PMHelmutSchmidtPortal.Migrations
                     b.Property<int?>("VariantId")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("WorkCost")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("WorkPieceId")
                         .HasColumnType("int");
 
@@ -2410,7 +2424,55 @@ namespace PMHelmutSchmidtPortal.Migrations
                     b.ToTable("PmProductionState");
                 });
 
-            modelBuilder.Entity("PMHelmutSchmidtPortal.HSUPortal.Products.Details.SurfaceFinish", b =>
+            modelBuilder.Entity("PMHelmutSchmidtPortal.HSUPortal.Products.Details.Specification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("MaterialGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int?>("SpecificationGroupId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaterialGroupId");
+
+                    b.HasIndex("SpecificationGroupId");
+
+                    b.ToTable("PmSpecification");
+                });
+
+            modelBuilder.Entity("PMHelmutSchmidtPortal.HSUPortal.Products.Details.SpecificationGroup", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -2450,7 +2512,7 @@ namespace PMHelmutSchmidtPortal.Migrations
 
                     b.HasIndex("MaterialGroupId");
 
-                    b.ToTable("PmSurfaceFinish");
+                    b.ToTable("PmSpecificationGroup");
                 });
 
             modelBuilder.Entity("PMHelmutSchmidtPortal.HSUPortal.Products.Details.WizardStep", b =>
@@ -2501,18 +2563,61 @@ namespace PMHelmutSchmidtPortal.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SurfaceFinishId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("MaterialGroupId");
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("SurfaceFinishId");
-
                     b.ToTable("PmWorkPiece");
+                });
+
+            modelBuilder.Entity("PMHelmutSchmidtPortal.HSUPortal.Products.Details.WorkPieceSpecification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("SpecificationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SpecificationName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("WorkPieceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SpecificationId");
+
+                    b.HasIndex("WorkPieceId");
+
+                    b.ToTable("PmWorkPieceSpecification");
                 });
 
             modelBuilder.Entity("PMHelmutSchmidtPortal.HSUPortal.Products.Details.WorkPieceVariant", b =>
@@ -4203,10 +4308,27 @@ namespace PMHelmutSchmidtPortal.Migrations
                     b.Navigation("WorkPiece");
                 });
 
-            modelBuilder.Entity("PMHelmutSchmidtPortal.HSUPortal.Products.Details.SurfaceFinish", b =>
+            modelBuilder.Entity("PMHelmutSchmidtPortal.HSUPortal.Products.Details.Specification", b =>
                 {
                     b.HasOne("PMHelmutSchmidtPortal.HSUPortal.Products.Details.MaterialGroup", "MaterialGroup")
-                        .WithMany("SurfaceFinishes")
+                        .WithMany("Specifications")
+                        .HasForeignKey("MaterialGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PMHelmutSchmidtPortal.HSUPortal.Products.Details.SpecificationGroup", "SpecificationGroup")
+                        .WithMany("Specifications")
+                        .HasForeignKey("SpecificationGroupId");
+
+                    b.Navigation("MaterialGroup");
+
+                    b.Navigation("SpecificationGroup");
+                });
+
+            modelBuilder.Entity("PMHelmutSchmidtPortal.HSUPortal.Products.Details.SpecificationGroup", b =>
+                {
+                    b.HasOne("PMHelmutSchmidtPortal.HSUPortal.Products.Details.MaterialGroup", "MaterialGroup")
+                        .WithMany("SpecificationGroups")
                         .HasForeignKey("MaterialGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -4239,17 +4361,28 @@ namespace PMHelmutSchmidtPortal.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("PMHelmutSchmidtPortal.HSUPortal.Products.Details.SurfaceFinish", "SurfaceFinish")
-                        .WithMany()
-                        .HasForeignKey("SurfaceFinishId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("MaterialGroup");
 
                     b.Navigation("Product");
+                });
 
-                    b.Navigation("SurfaceFinish");
+            modelBuilder.Entity("PMHelmutSchmidtPortal.HSUPortal.Products.Details.WorkPieceSpecification", b =>
+                {
+                    b.HasOne("PMHelmutSchmidtPortal.HSUPortal.Products.Details.Specification", "Specification")
+                        .WithMany()
+                        .HasForeignKey("SpecificationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PMHelmutSchmidtPortal.HSUPortal.Products.Details.WorkPiece", "WorkPiece")
+                        .WithMany("WorkPieceSpecifications")
+                        .HasForeignKey("WorkPieceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Specification");
+
+                    b.Navigation("WorkPiece");
                 });
 
             modelBuilder.Entity("PMHelmutSchmidtPortal.HSUPortal.Products.Details.WorkPieceVariant", b =>
@@ -4644,12 +4777,21 @@ namespace PMHelmutSchmidtPortal.Migrations
 
             modelBuilder.Entity("PMHelmutSchmidtPortal.HSUPortal.Products.Details.MaterialGroup", b =>
                 {
-                    b.Navigation("SurfaceFinishes");
+                    b.Navigation("SpecificationGroups");
+
+                    b.Navigation("Specifications");
+                });
+
+            modelBuilder.Entity("PMHelmutSchmidtPortal.HSUPortal.Products.Details.SpecificationGroup", b =>
+                {
+                    b.Navigation("Specifications");
                 });
 
             modelBuilder.Entity("PMHelmutSchmidtPortal.HSUPortal.Products.Details.WorkPiece", b =>
                 {
                     b.Navigation("ProductionStates");
+
+                    b.Navigation("WorkPieceSpecifications");
 
                     b.Navigation("WorkPieceVariants");
                 });

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Web;
 using Abp.Application.Services.Dto;
 using Abp.Domain.Repositories;
-using Abp.EntityFrameworkCore.Repositories;
 using Abp.Linq.Extensions;
 using Abp.Runtime.Security;
 using Castle.Core.Logging;
@@ -29,10 +28,8 @@ public class ProductionPlanManager : HSUDomainBaseService, IProductionPlanManage
     private readonly IProductionDetailsRepository _productionDetailsRepository;
     private readonly IProducerInfoRepository _producerInfoRepository;
     private readonly IRepository<RatingType> _ratingTypeRepository;
-    private readonly IRepository<ProductionPlanActionPreconditionState> _preconditionsRepository;
-    private readonly IRepository<ProductionPlanAction> _planActionsRepository;
     private readonly IProductionPlanRepository _productionPlanRepository;
-    private readonly IRepository<ProductionPlanRating> _planRatingRepository;
+    private readonly IProductProducerRepository _productProducerRepository;
 
 
     public ProductionPlanManager(
@@ -40,19 +37,15 @@ public class ProductionPlanManager : HSUDomainBaseService, IProductionPlanManage
         IProductionDetailsRepository productionDetailsRepository,
         IProducerInfoRepository producerInfoRepository,
         IRepository<RatingType> ratingTypeRepository,
-        IRepository<ProductionPlanActionPreconditionState> preconditionsRepository,
-        IRepository<ProductionPlanAction> planActionsRepository,
         IProductionPlanRepository productionPlanRepository,
-        IRepository<ProductionPlanRating> planRatingRepository)
+        IProductProducerRepository productProducerRepository)
     {
         _productManager = productManager;
         _productionDetailsRepository = productionDetailsRepository;
         _producerInfoRepository = producerInfoRepository;
         _ratingTypeRepository = ratingTypeRepository;
-        _preconditionsRepository = preconditionsRepository;
-        _planActionsRepository = planActionsRepository;
         _productionPlanRepository = productionPlanRepository;
-        _planRatingRepository = planRatingRepository;
+        _productProducerRepository = productProducerRepository;
         Logger = NullLogger.Instance;
     }
 
@@ -161,7 +154,8 @@ public class ProductionPlanManager : HSUDomainBaseService, IProductionPlanManage
             {
                 productionDetails.Product.State = ProductState.ProductionReady;
             }
-            
+
+            RemoveProducersWithoutSteps(productionDetails);
         }
         catch (Exception e)
         {
@@ -318,7 +312,7 @@ public class ProductionPlanManager : HSUDomainBaseService, IProductionPlanManage
             decimal stepCost = standardVariantCost.MaterialCost +
                                defaultMeasurement.AdditionalCost +
                                defaultMeasurement.TransportAndAssemblyCost +
-                               defaultMeasurement.WorkHours * stepProducerInfo.Rate;
+                               standardVariantCost.WorkCost;
 
             productionStepsDtos.Add(new VcpProductionStepDto
             {
@@ -334,5 +328,18 @@ public class ProductionPlanManager : HSUDomainBaseService, IProductionPlanManage
         }
 
         return productionStepsDtos;
+    }
+
+    private void RemoveProducersWithoutSteps(ProductionDetails productionDetails)
+    {
+        List<ProductProducer> producersWithoutSteps = productionDetails.AssignedProducers
+            .Where(pp => productionDetails.ProductionSteps
+                .All(step => step.ProducerInfo.UserId != pp.AssignedProducerId))
+            .ToList();
+
+        foreach (ProductProducer producer in producersWithoutSteps)
+        {
+            _productProducerRepository.Delete(producer);
+        }
     }
 }

@@ -190,7 +190,10 @@ export class DetailsDisplayService extends IDetailsDisplayService {
       const properties: ICardProperty[] = [];
       this.addProperty(properties, this.localizationService.loc('ProductDetailsSidebar.SectionMaterialGroups.Material'), workPiece.name);
       this.addProperty(properties, this.localizationService.loc('ProductDetailsSidebar.SectionMaterialGroups.FinalState'), workPiece.finishedState);
-      this.addProperty(properties, this.localizationService.loc('ProductDetailsSidebar.SectionMaterialGroups.SurfaceFinish'), this.localizationService.getLocalizedSurfaceFinish(workPiece.surfaceFinish.name ?? ''));
+      const specificationNames: string = (workPiece.specifications ?? [])
+        .map(spec => this.localizationService.getLocalizedSpecification(spec.name ?? '') ?? spec.name)
+        .join(', ');
+      this.addProperty(properties, this.localizationService.loc('ProductDetailsSidebar.SectionMaterialGroups.Specification'), specificationNames);
 
       groups.push(this.createPropertyGroup(properties, this.localizationService.getLocalizedMaterialGroupName(workPiece.materialGroup.name ?? '')))
     });

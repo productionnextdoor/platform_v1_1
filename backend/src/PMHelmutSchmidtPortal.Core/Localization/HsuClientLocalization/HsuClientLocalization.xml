@@ -10,6 +10,7 @@
         <text name="Menu.OrderOverview">Order overview</text>
         <text name="Menu.OrderDetail">Order details</text>
         <text name="Menu.Statistics">Statistics</text>
+        <text name="Menu.Materials">Materials</text>
         <text name="Menu.PrivacyPolicy">Privacy Policy</text>
         <text name="Menu.TermsAndConditions">General Terms and Conditions</text>
         <text name="Menu.ContactCard.Title">Questions &amp; Contact</text>
@@ -74,6 +75,7 @@
         <!--ConfirmPopup (Default)-->
         <text name="ConfirmPopup.Default.Confirm">Confirm</text>
         <text name="ConfirmPopup.Default.Cancel">Cancel</text>
+        <text name="ConfirmPopup.Default.Ok">OK</text>
 
         <!--Product-->
         <!--Measurements-->
@@ -90,23 +92,23 @@
         <text name="MaterialGroup.Metal">Metal</text>
         <text name="MaterialGroup.Glass">Glass</text>
 
-        <!--Surface names-->
-        <text name="SurfaceFinish.Oiled">Oiled</text>
-        <text name="SurfaceFinish.Waxed">Waxed</text>
-        <text name="SurfaceFinish.Painted">Painted</text>
-        <text name="SurfaceFinish.Glazed">Glazed</text>
-        <text name="SurfaceFinish.Stained">Stained</text>
-        <text name="SurfaceFinish.Veneered">Veneered</text>
-        <text name="SurfaceFinish.SolidColored">SolidColored</text>
-        <text name="SurfaceFinish.Coated">Coated</text>
-        <text name="SurfaceFinish.WithPrimerFilm">With primer film</text>
-        <text name="SurfaceFinish.Polished">Polished</text>
-        <text name="SurfaceFinish.Matt">Matt</text>
-        <text name="SurfaceFinish.Brushed">Brushed</text>
-        <text name="SurfaceFinish.Smooth">Smooth</text>
-        <text name="SurfaceFinish.Etched">Etched</text>
-        <text name="SurfaceFinish.Sandblasted">Sandblasted</text>
-        <text name="SurfaceFinish.Sanded">Sanded</text>
+        <!--Specification names-->
+        <text name="Specification.Oiled">Oiled</text>
+        <text name="Specification.Waxed">Waxed</text>
+        <text name="Specification.Painted">Painted</text>
+        <text name="Specification.Glazed">Glazed</text>
+        <text name="Specification.Stained">Stained</text>
+        <text name="Specification.Veneered">Veneered</text>
+        <text name="Specification.SolidColored">SolidColored</text>
+        <text name="Specification.Coated">Coated</text>
+        <text name="Specification.WithPrimerFilm">With primer film</text>
+        <text name="Specification.Polished">Polished</text>
+        <text name="Specification.Matt">Matt</text>
+        <text name="Specification.Brushed">Brushed</text>
+        <text name="Specification.Smooth">Smooth</text>
+        <text name="Specification.Etched">Etched</text>
+        <text name="Specification.Sandblasted">Sandblasted</text>
+        <text name="Specification.Sanded">Sanded</text>
 
         <!--Product tables-->
         <!--Product table Header-->
@@ -187,13 +189,22 @@
         <text name="ProductCreateOrEditMaterialGroups.Title">Material groups</text>
         <text name="ProductCreateOrEditMaterialGroups.Note">Please enter all product information and then release the product to me for review. (admin)</text>
         <text name="ProductCreateOrEditMaterialGroups.SubTitle">Material groups involved in the product standard</text>
-        <text name="ProductCreateOrEditMaterialGroups.Description">Select the material group(s) used in the product standard (min. one material group). Please also indicate the surface quality to be processed and the final condition of the respective material group in the production process. Also note that the selection of the material group(s) has an impact on the product variants.</text>
+        <text name="ProductCreateOrEditMaterialGroups.Description">Add the material groups used in the product standard (min. one material group). Please also indicate the specification and the final condition of the respective material group in the production process. Also note that the selection of the material group(s) has an impact on the product variants.</text>
+        <text name="ProductCreateOrEditMaterialGroups.MaterialItem.MaterialGroupLabel">Material group</text>
+        <text name="ProductCreateOrEditMaterialGroups.MaterialItem.MaterialGroupPlaceholder">Select material group</text>
         <text name="ProductCreateOrEditMaterialGroups.MaterialItem.MaterialLabel">Material in product standard</text>
         <text name="ProductCreateOrEditMaterialGroups.MaterialItem.FinalStateLabel">Final state of the raw material group in the production process</text>
-        <text name="ProductCreateOrEditMaterialGroups.MaterialItem.SurfaceFinishLabel">Surface texture</text>
+        <text name="ProductCreateOrEditMaterialGroups.MaterialItem.SpecificationGroupLabel">Specification group</text>
+        <text name="ProductCreateOrEditMaterialGroups.MaterialItem.SpecificationGroupPlaceholder">Select specification group</text>
+        <text name="SpecificationGroup.Ungrouped">Without group</text>
+        <text name="ProductCreateOrEditMaterialGroups.MaterialItem.SpecificationLabel">Specification</text>
         <text name="ProductCreateOrEditMaterialGroups.MaterialItem.MaterialPlaceholder">Enter material</text>
         <text name="ProductCreateOrEditMaterialGroups.MaterialItem.FinalStatePlaceholder">Final state of the raw material group</text>
-        <text name="ProductCreateOrEditMaterialGroups.MaterialItem.SurfaceFinishPlaceholder">Select state</text>
+        <text name="ProductCreateOrEditMaterialGroups.MaterialItem.SpecificationPlaceholder">Select specification</text>
+        <text name="ProductCreateOrEditMaterialGroups.MaterialItem.SecondSpecificationLabel">Second specification (optional)</text>
+        <text name="ProductCreateOrEditMaterialGroups.MaterialItem.SecondSpecificationPlaceholder">Select second specification</text>
+        <text name="ProductCreateOrEditMaterialGroups.MaterialItem.FirstSpecificationHeading">Specification 1</text>
+        <text name="ProductCreateOrEditMaterialGroups.MaterialItem.SecondSpecificationHeading">Specification 2 (optional)</text>
 
         <!--Variants step-->
         <text name="ProductCreateOrEditVariants.Title">Product variants</text>
@@ -254,7 +265,7 @@
         <text name="ProductDetailsSidebar.SectionMaterialGroups.Title">Material groups of product</text>
         <text name="ProductDetailsSidebar.SectionMaterialGroups.Material">Material</text>
         <text name="ProductDetailsSidebar.SectionMaterialGroups.FinalState">Final state</text>
-        <text name="ProductDetailsSidebar.SectionMaterialGroups.SurfaceFinish">Surface texture</text>
+        <text name="ProductDetailsSidebar.SectionMaterialGroups.Specification">Specification</text>
         <text name="ProductDetailsSidebar.SectionVariants.Title">Product variants</text>
         <text name="ProductDetailsSidebar.SectionVariants.Measurements.Title">Alternative measurements (Min. - Max.)</text>
         <text name="ProductDetailsSidebar.SectionVariants.Measurements.Key">Size (H, W, D)</text>
@@ -336,7 +347,7 @@
         <text name="ProductDetailsDeveloper.SectionMaterialGroups.Title">Material groups</text>
         <text name="ProductDetailsDeveloper.SectionMaterialGroups.Material">Material</text>
         <text name="ProductDetailsDeveloper.SectionMaterialGroups.FinalState">Final state</text>
-        <text name="ProductDetailsDeveloper.SectionMaterialGroups.SurfaceFinish">Surface texture</text>
+        <text name="ProductDetailsDeveloper.SectionMaterialGroups.Specification">Specification</text>
         <text name="ProductDetailsDeveloper.SectionVariants.Title">Product variants</text>
         <text name="ProductDetailsDeveloper.SectionVariants.Measurements.Title">Alternative measurements (Min. - Max.)</text>
         <text name="ProductDetailsDeveloper.SectionVariants.Measurements.Key">Site (H, W, D)</text>
@@ -443,6 +454,36 @@
         <text name="ProductDetails.WorkstepWizard.DeletePopup.Confirm">Delete Work step</text>
         <text name="ProductDetails.WorkstepWizard.DeletePopup.Cancel">Cancel</text>
 
+        <!--Workstep Matrix-->
+        <text name="ProductDetails.WorkstepMatrix.WorkCostLabel">Labor and machine costs</text>
+        <text name="ProductDetails.WorkstepMatrix.WorkHoursLabel">Working time in hours</text>
+        <text name="ProductDetails.WorkstepMatrix.TransportCostLabel">Transportation and assembly costs</text>
+        <text name="ProductDetails.WorkstepMatrix.ProcessingTimeLabel">Estimated order processing time in weeks</text>
+        <text name="ProductDetails.WorkstepMatrix.MaterialCostLabel">Material costs</text>
+        <text name="ProductDetails.WorkstepMatrix.CheckboxLabel">I cannot produce this variant</text>
+        <text name="ProductDetails.WorkstepMatrix.SizeCheckboxLabel">I cannot produce this size</text>
+        <text name="ProductDetails.WorkstepMatrix.InputUnit">Euro (Net)</text>
+        <text name="ProductDetails.WorkstepMatrix.HourlyInputUnit">Hours</text>
+        <text name="ProductDetails.WorkstepMatrix.WeeklyInputUnit">Weeks</text>
+        <text name="ProductDetails.WorkstepMatrix.RequiredFieldIndicator">*</text>
+
+        <!--Fill Assistant-->
+        <text name="ProductDetails.WorkstepMatrix.FillAssistant.Title">Fill Assistant</text>
+        <text name="ProductDetails.WorkstepMatrix.FillAssistant.ManualOption">Manual</text>
+        <text name="ProductDetails.WorkstepMatrix.FillAssistant.CopyOption">Copy from</text>
+        <text name="ProductDetails.WorkstepMatrix.FillAssistant.PercentageOption">Percentage of</text>
+        <text name="ProductDetails.WorkstepMatrix.FillAssistant.SourceLabel">Source</text>
+        <text name="ProductDetails.WorkstepMatrix.FillAssistant.PercentageLabel">Percentage</text>
+        <text name="ProductDetails.WorkstepMatrix.FillAssistant.ApplyButton">Apply</text>
+        <text name="ProductDetails.WorkstepMatrix.FillAssistant.CancelButton">Cancel</text>
+
+        <!--Validation Messages-->
+        <text name="ProductDetails.WorkstepMatrix.Validation.WorkHoursRequired">Working hours are required</text>
+        <text name="ProductDetails.WorkstepMatrix.Validation.ProcessingTimeRequired">Processing time is required</text>
+        <text name="ProductDetails.WorkstepMatrix.Validation.WorkCostRequired">Work costs are required</text>
+        <text name="ProductDetails.WorkstepMatrix.Validation.TransportCostRequired">Transport costs are required</text>
+        <text name="ProductDetails.WorkstepMatrix.Validation.MaterialCostRequired">Material costs are required</text>
+
         <!-- Max cost popup -->
         <text name="ProductDetails.MaxCostPopup.Title">Enter Maximum Cost</text>
         <text name="ProductDetails.MaxCostPopup.Description">Please enter the maximum cost for this product.</text>
@@ -459,6 +500,13 @@
         <text name="ProductExport.ConfirmPopup.Description">The product has been transferred to the shop. Please go to the shop and check the product. You can then publish the product via the shop.</text>
         <text name="ProductExport.ConfirmPopup.Confirm">Confirm</text>
         <text name="ProductExport.ConfirmPopup.Cancel">Cancel</text>
+
+        <!--Product delete-->
+        <text name="Product.Delete.ButtonLabel">Delete product</text>
+        <text name="Product.Delete.ConfirmPopup.Title">Delete product</text>
+        <text name="Product.Delete.ConfirmPopup.Description">Are you sure you want to delete this product? This action cannot be undone.</text>
+        <text name="Product.Delete.NotAllowed.Title">Deletion not possible</text>
+        <text name="Product.Delete.NotAllowed.Description">This product has already been published to the shop and cannot be deleted.</text>
 
         <!--Edit mode-->
         <text name="EditMode.TabCard.Tabs.Live">Current Live Product</text>
@@ -620,6 +668,7 @@
         <text name="Profile.State.Active">Active</text>
         <text name="Profile.State.InActive">Inactive</text>
         <text name="Profile.State.Invited">Invited</text>
+        <text name="Profile.State.Hidden">Hidden</text>
 
         <!--Admin profile-->
         <text name="EditProfile.Admin.PopupTitle">My Profile</text>
@@ -644,6 +693,10 @@
         <text name="EditProfile.Developer.RegionOrState">Region/State</text>
         <text name="EditProfile.Developer.Save">Save</text>
         <text name="EditProfile.Developer.Cancel">Cancel</text>
+        <text name="EditProfile.Developer.AnonymizeProfile">Delete Profile</text>
+
+        <!-- Producer profile for edit -->
+        <text name="EditProfile.Producer.AnonymizeProfile">Delete Profile</text>
 
         <!-- Developer profile for admin (edit) -->
         <text name="AdminDeveloperProfileEdit.Labels.Cancel">Cancel</text>
@@ -659,6 +712,7 @@
         <text name="AdminDeveloperProfileEdit.Labels.State">Status</text>
         <text name="AdminDeveloperProfileEdit.Labels.Street">Street and House Number</text>
         <text name="AdminDeveloperProfileEdit.Labels.ZipCode">Zip Code</text>
+        <text name="AdminDeveloperProfileEdit.Labels.AnonymizeProfile">Delete Profile</text>
         <text name="AdminDeveloperProfileEdit.Misc.NotePlaceholder">You can add a note here. The note is not visible to the developer.</text>
         <text name="AdminDeveloperProfileEdit.Misc.FormIntroduction">The developer's information can be adjusted at any time.</text>
         <text name="AdminDeveloperProfileEdit.Misc.FormTitle">General Information</text>
@@ -719,6 +773,7 @@
         <text name="AdminProducerProfileEdit.Labels.Street">Street and House Number</text>
         <text name="AdminProducerProfileEdit.Labels.TradeType">Trade Type</text>
         <text name="AdminProducerProfileEdit.Labels.ZipCode">Zip Code</text>
+        <text name="AdminProducerProfileEdit.Labels.ActiveOrdersWarning">The producer still has active orders and cannot be deleted.</text>
         <text name="AdminProducerProfileEdit.NotePlaceholder">You can add a note here. The note is not visible to the producer.</text>
         <text name="AdminProducerProfileEdit.ParameterTitle">Value Chain Parameters</text>
         <text name="AdminProducerProfileEdit.PopupSubtitle">Information about the Company</text>
@@ -749,10 +804,21 @@
         <!--Profile for admin (delete confirmation popup) -->
         <text name="AdminProfile.ConfirmDeletePopup.Description">If you confirm the action, the {0} will be deleted from the system.</text>
         <text name="AdminProfile.ConfirmDeletePopup.Title">Delete {0}</text>
+        <text name="AdminProfile.ConfirmDeleteDeveloperPopup.Description">This developer is associated with a product. To delete them, the product must be deleted first.</text>
+        <text name="AdminProfile.ConfirmDeleteProducerPopup.Description">This producer is associated with a product. To delete them, the product must be deleted first.</text>
 
         <!--Profile for admin (impersonation confirmation popup) -->
         <text name="AdminProfile.ConfirmImpersonationPopup.Description">Are you sure you want to switch to the selected user's view? Doing so will exit your administration view.</text>
         <text name="AdminProfile.ConfirmImpersonationPopup.Title">Log in as {0}</text>
+
+        <!--Profile for admin (remove from products confirmation popup) -->
+        <text name="AdminProfile.ConfirmRemoveFromProductsPopup.Description">By deleting, the {0} must be removed from all affected products.</text>
+        <text name="AdminProfile.ConfirmRemoveFromProductsPopup.Title">Delete {0}</text>
+        <text name="ConfirmPopup.Default.Continue">Continue</text>
+
+        <!--Profile for admin (anonymize confirmation popup) -->
+        <text name="AdminProfile.ConfirmAnonymizePopup.Description">Are you sure you want to delete the {0}'s profile? This action cannot be undone.</text>
+        <text name="AdminProfile.ConfirmAnonymizePopup.Title">Delete {0}</text>
 
         <!--Developer overview table-->
         <text name="DeveloperOverview.Title">Developer</text>
@@ -895,6 +961,10 @@
         <!--Product-->
         <text name="Error.Product.ProductNotFound.Title">Product not found</text>
         <text name="Error.Product.ProductNotFound.Text">Product with id = {0} not found</text>
+        <text name="Error.Product.DeleteFailed.Title">Product could not be deleted</text>
+        <text name="Error.Product.DeleteFailed.Text">The product with id = {0} could not be deleted. Please try again.</text>
+        <text name="Error.Product.DeleteNotAllowed.Title">Deletion not possible</text>
+        <text name="Error.Product.DeleteNotAllowed.Text">This product has already been published to the shop and cannot be deleted.</text>
         <text name="Error.Product.NotReadyForDev.Title">Not allowed</text>
         <text name="Error.Product.NotReadyForDev.Text">The product with id = {0} is not ready for developer</text>
         <text name="Error.Product.NoEditAllowed.Title">Not allowed</text>
@@ -914,8 +984,10 @@
         <text name="Error.Product.MaterialGroups.NoFinalState.Text">The product wasn't created properly</text>
         <text name="Error.Product.MaterialGroups.WorkPieces.Title">Wrong Workpieces</text>
         <text name="Error.Product.MaterialGroups.WorkPieces.Text">Workpieces with id's = {0} don't exist.</text>
-        <text name="Error.Product.MaterialGroups.Surfaces.Title">Error in workPiece</text>
-        <text name="Error.Product.MaterialGroups.Surfaces.Text">Selected Surface finish doesn't exist</text>
+        <text name="Error.Product.MaterialGroups.Specifications.NotFoundTitle">Error in workPiece</text>
+        <text name="Error.Product.MaterialGroups.Specifications.NotFoundText">Selected specification doesn't exist</text>
+        <text name="Error.Product.MaterialGroups.Specifications.Title">Invalid specifications</text>
+        <text name="Error.Product.MaterialGroups.Specifications.CountText">1 to 2 specifications must be selected per work piece.</text>
         <text name="Error.Product.MaterialGroups.DuplicateFinishedState.Title">Duplicate finish state</text>
         <text name="Error.Product.MaterialGroups.DuplicateFinishedState.Text">'{0}' is used several times as the final state. However, it must be unique.</text>
 
@@ -975,6 +1047,7 @@
 
         <text name="Error.User.Delete.Title">Can't be deleted</text>
         <text name="Error.User.Delete.Text">Only users that didn't complete the registration can be removed</text>
+        <text name="Error.Developer.Delete.HasProducts">Developer cannot be deleted because they still have assigned products</text>
 
         <!--Statistics-->
         <text name="Error.Statistics.NoData">No data available</text>
@@ -1103,6 +1176,34 @@
         <text name="Statistics.ProductStep.StateType.ProductFinal">Final Product</text>
         <text name="Statistics.ProductStep.CostPerHour">Cost per hour</text>
         <text name="Statistics.ProductStep.TotalVariantCost">Total Variant Cost</text>
+
+        <!--Material Management-->
+        <text name="Materials.Title">Material Management</text>
+        <text name="Materials.CreateButton">Create Material</text>
+        <text name="Materials.NameLabel">Material Name</text>
+        <text name="Materials.NamePlaceholder">Enter material name</text>
+        <text name="Materials.SpecificationsLabel">Specifications</text>
+        <text name="Materials.SpecificationNameLabel">Specification Name</text>
+        <text name="Materials.SpecificationNamePlaceholder">Enter specification name</text>
+        <text name="Materials.AddSpecification">Add Specification</text>
+        <text name="Materials.EditMaterial">Edit Material</text>
+        <text name="Materials.DeleteMaterial">Delete Material</text>
+        <text name="Materials.DeleteSpecification">Delete Specification</text>
+        <text name="Materials.DeleteConfirmation">Are you sure you want to delete this material?</text>
+        <text name="Materials.DeleteSpecificationConfirmation">Are you sure you want to delete this specification?</text>
+        <text name="Materials.SaveButton">Save</text>
+        <text name="Materials.CancelButton">Cancel</text>
+        <text name="Materials.NoMaterials">No materials available.</text>
+        <text name="Materials.NoSpecifications">No specifications available.</text>
+        <text name="Materials.GroupNameLabel">Group</text>
+        <text name="Materials.GroupNamePlaceholder">Enter group name</text>
+        <text name="Materials.GroupSingularLabel">Group</text>
+        <text name="Materials.GroupPluralLabel">Groups</text>
+        <text name="Materials.AddGroup">Add group</text>
+        <text name="Materials.NoGroups">No groups available.</text>
+        <text name="Materials.DeleteGroupConfirmation">Are you sure you want to delete this group?</text>
+        <text name="Materials.DeleteGroup">Delete group</text>
+        <text name="Materials.UngroupedSpecificationsLabel">Specifications without group</text>
 
     </texts>
 </localizationDictionary>

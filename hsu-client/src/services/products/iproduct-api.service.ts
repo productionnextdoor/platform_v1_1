@@ -1,8 +1,10 @@
 import {
+  DeveloperProductInvolvementDto,
   GeneralInfoOutputDto,
   PagedResultDtoOfProductListDto,
   ProducerAssignmentStatus,
   ProducerAssignmentStatusDto,
+  ProducerProductInvolvementDto,
   ProductFilesStepOutput,
   ProductListDto,
   ProductMeasurementStepInput,
@@ -49,4 +51,7 @@ export abstract class IProductApiService {
   abstract enableEditMode(productId: number): Observable<number>
   abstract cancelEditMode(productId: number): Observable<void>
   abstract confirmEditMode(productId: number): Observable<void>
+  abstract deleteProduct(productId: number): Observable<void>
+  abstract getProducerProductInvolvements(producerId: number): Observable<ProducerProductInvolvementDto[]>
+  abstract getDeveloperProductInvolvements(developerId: number): Observable<DeveloperProductInvolvementDto[]>
 }

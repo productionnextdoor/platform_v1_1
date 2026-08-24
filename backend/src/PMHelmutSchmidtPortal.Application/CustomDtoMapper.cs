@@ -33,6 +33,7 @@ using PMHelmutSchmidtPortal.Friendships;
 using PMHelmutSchmidtPortal.Friendships.Cache;
 using PMHelmutSchmidtPortal.Friendships.Dto;
 using PMHelmutSchmidtPortal.HSUPortal.ExtendedUser.Dto;
+using MaterialAdminDto = PMHelmutSchmidtPortal.HSUPortal.Materials.Dto;
 using PMHelmutSchmidtPortal.HSUPortal.Orders.Dto;
 using PMHelmutSchmidtPortal.HSUPortal.Orders.Dto.Details;
 using PMHelmutSchmidtPortal.HSUPortal.ProductionSteps;
@@ -242,15 +243,29 @@ internal static class CustomDtoMapper
             .IncludeBase<MaterialGroup, MaterialGroupBaseDto>()
             .ForMember(materialGroupDto => materialGroupDto.Surfaces,
                 options =>
-                    options.MapFrom(materialGroup => materialGroup.SurfaceFinishes));
+                    options.MapFrom(materialGroup => materialGroup.Specifications));
 
-        configuration.CreateMap<SurfaceFinish, SurfaceDto>()
-            .ForMember(surfaceDto => surfaceDto.SurfaceFinishId,
-                option => option.MapFrom(surface => surface.Id));
+        configuration.CreateMap<Specification, SurfaceDto>()
+            .ForMember(surfaceDto => surfaceDto.SpecificationId,
+                option => option.MapFrom(specification => specification.Id))
+            .ForMember(surfaceDto => surfaceDto.SpecificationGroupName,
+                option => option.MapFrom(specification => specification.SpecificationGroup != null ? specification.SpecificationGroup.Name : null));
+
+        configuration.CreateMap<MaterialGroup, MaterialAdminDto.MaterialDto>()
+            .ForMember(dto => dto.Specifications,
+                options => options.MapFrom(mg => mg.Specifications))
+            .ForMember(dto => dto.SpecificationGroups,
+                options => options.MapFrom(mg => mg.SpecificationGroups));
+
+        configuration.CreateMap<Specification, MaterialAdminDto.SpecificationDto>();
+
+        configuration.CreateMap<SpecificationGroup, MaterialAdminDto.SpecificationGroupDto>();
 
         configuration.CreateMap<WorkPiece, WorkPieceDto>()
             .ForMember(workPieceDto => workPieceDto.WorkPieceId,
                 option => option.MapFrom(workPiece => workPiece.Id))
+            .ForMember(workPieceDto => workPieceDto.SpecificationIds, options =>
+                options.MapFrom(workPiece => workPiece.WorkPieceSpecifications.Select(wps => wps.SpecificationId).ToList()))
             .ForMember(workPieceDto => workPieceDto.Name, options =>
                 options.MapFrom(workPiece => workPiece.ProductionStates.First(ps => ps.StateType == ProductionStateType.WorkPieceStart).Description))
             .ForMember(workPieceDto => workPieceDto.FinishedState, options =>
@@ -265,8 +280,12 @@ internal static class CustomDtoMapper
             .IncludeBase<WorkPiece, WorkPieceDto>()
             .ForMember(workPieceDto => workPieceDto.MaterialGroup, options =>
                 options.MapFrom(workPiece => workPiece.MaterialGroup))
-            .ForMember(workPieceDto => workPieceDto.SurfaceFinish, options =>
-                options.MapFrom(workPiece => workPiece.SurfaceFinish));
+            .ForMember(workPieceDto => workPieceDto.Specifications, options =>
+                options.MapFrom(workPiece => workPiece.WorkPieceSpecifications.Select(wps => new MaterialAdminDto.SpecificationDto
+                {
+                    Id = wps.SpecificationId,
+                    Name = wps.SpecificationName
+                }).ToList()));
 
         configuration.CreateMap<ProductMeasurement, MeasurementDto>()
             .ForMember(measurementDto => measurementDto.MeasurementId,
@@ -328,6 +347,8 @@ internal static class CustomDtoMapper
 
         configuration.CreateMap<User, DeveloperProfileOutput>()
             .IncludeBase<User, DeveloperProfile>();
+
+        configuration.CreateMap<FullDeveloperProfileOutput, DeveloperProfileOutput>();
 
         configuration.CreateMap<IDeveloperAddress, UserAddress>();
         configuration.CreateMap<IProducerAddress, UserAddress>()
@@ -455,8 +476,6 @@ internal static class CustomDtoMapper
         configuration.CreateMap<ProductionStepWorkPieceVariantCost, WorkPieceVariantCostDto>()
             .ForMember(workPieceVariantDto => workPieceVariantDto.WorkPieceVariantCostId, option =>
                 option.MapFrom(workPieceVariant => workPieceVariant.Id))
-            .ForMember(workPieceVariantDto => workPieceVariantDto.WorkPieceId, option =>
-                option.MapFrom(workPieceVariant => workPieceVariant.WorkPiece.Id))
             .ForMember(workPieceVariantDto => workPieceVariantDto.WorkPieceVariantId, option =>
                 option.MapFrom(workPieceVariant => workPieceVariant.Variant.Id));
 

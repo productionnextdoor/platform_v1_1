@@ -35,6 +35,9 @@ import {
     ApiServiceProxies.OrderServiceProxy,
     ApiServiceProxies.OrderDetailsServiceProxy,
     ApiServiceProxies.StatisticsServiceProxy,
+    ApiServiceProxies.MaterialServiceProxy,
+    ApiServiceProxies.SpecificationServiceProxy,
+    ApiServiceProxies.SpecificationGroupServiceProxy,
     {
       provide: AbpHttpConfigurationService,
       useClass: ZeroTemplateHttpConfigurationService

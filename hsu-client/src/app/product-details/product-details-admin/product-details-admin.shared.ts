@@ -30,8 +30,11 @@ export interface IProductDetailsAdminLocalisations extends IProductDetailsShared
   cancelEditModePopup: IPmConfirmPopupLocalisations;
   publishEditModePopup: IPmConfirmPopupLocalisations;
   maxCostPopup: IPmMaxCostPopupLocalisations;
+  confirmDeletePopup: IPmConfirmPopupLocalisations;
+  deleteNotAllowedPopup: IPmConfirmPopupLocalisations;
   publishProduct: string,
   makeChanges: string,
+  deleteProduct: string,
 
 }
 
@@ -52,6 +55,9 @@ export const ProductDetailsAdminLocalisations: IProductDetailsAdminLocalisations
   cancelEditModePopup: pmConfirmPopupLocalisations,
   publishEditModePopup: pmConfirmPopupLocalisations,
   maxCostPopup: pmMaxCostPopupLocalisations,
+  confirmDeletePopup: pmConfirmPopupLocalisations,
+  deleteNotAllowedPopup: pmConfirmPopupLocalisations,
   publishProduct: '',
-  makeChanges:'',
+  makeChanges: '',
+  deleteProduct: '',
 }
